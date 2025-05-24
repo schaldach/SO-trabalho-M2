@@ -3,10 +3,23 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include "page_table.c"
 
-const char* MEMORY_FILE = "data_memory.txt";
-const int MEMORY_LINE_SIZE = 20;
-const int MMU_CONSTANT = 1;
+#define MEMORY_LINE_SIZE 20
+#define MEMORY_FILE "data_memory.txt"
+
+#define MMU_CONSTANT 1;
+
+#define logical_adress_bit_size 32
+#define page_size 4096 // 256, 1024, 2048, 4096
+
+// cada número da memória na verdade representa apenas 1 byte, não um número (int ou short) em si
+
+// o tamanho das páginas "256B, 1kB, 4kB" se referem a byte (B) e não bits (b)
+
+
+
+#define 
 
 typedef struct {
     int virtual_adress;
@@ -17,18 +30,6 @@ typedef struct {
     TLB_ROW rows[16];
 } TLB;
 
-typedef struct {
-    int virtual_adress;
-    int physical_adress;
-    bool dirty;
-    bool accessed;
-    bool valid;
-} PAGE_TABLE_ROW;
-
-typedef struct {
-    PAGE_TABLE_ROW rows[32];
-} PAGE_TABLE;
-
 int main(){
     TLB tlb;
     PAGE_TABLE page_table;
@@ -38,24 +39,25 @@ int main(){
    unsigned int input; // 32 bits
    char* format = "%u";
 
+   // pegando input do console
    printf("Digite o endereço lógico: \n");
    scanf(format, &input);
    printf(format, input);
    printf("\n");
 
-    // lendo o número em decimal
-    unsigned int page_number = input / (1<<12);
-    unsigned int page_offset = input % (1<<12);
+    // traduzindo o número em decimal
+    unsigned int page_offset = input & (page_size-1);
+    unsigned int page_number = input - page_offset;
 
     // lendo a posição do arquivo
     FILE *fptr = fopen(MEMORY_FILE, "r");
     char currentLine[MEMORY_LINE_SIZE];
     int result, i=0;
     while(fgets(currentLine, MEMORY_LINE_SIZE, fptr)){
-        // não entendi como o endereço lógico se traduz no endereço físico! irei fazer por enquanto
-        // como endereço lógico + 1 = endereço físico (é como eu entendi que funciona o MMU)
-        // por enquanto TLB e PAGE_TABLE não tão sendo usadas, mas acredito que seria aqui, para a tradução
-        if(i == page_number*(1<<12) + page_offset + MMU_CONSTANT){
+        int physical_adress = page_number*(1<<12) + page_offset;
+
+        physical_adress += MMU_CONSTANT;
+        if(i == physical_adress){
             result = atoi(currentLine);
             break;
         }
@@ -63,7 +65,7 @@ int main(){
     }
     fclose(fptr);
 
-    printf("número da página:%u\n deslocamento da página:%hu\n valor lido na memória:%d\n", 
+    printf(" número da página:%u\n deslocamento da página:%hu\n valor lido na memória:%d\n", 
         page_number, page_offset, result);
 
 
