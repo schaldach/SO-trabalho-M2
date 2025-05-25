@@ -1,38 +1,28 @@
+// IMPORTS
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
 #include "page_table.c"
+#include "tlb.c"
 
+// MODIFICÁVEIS
+#define MMU_CONSTANT 1;
+#define logical_adress_bit_size 32
+#define page_bit_size 12 
+
+// CONSTANTES
+#define page_size 1<<page_bit_size // 2^page_bit_size
 #define MEMORY_LINE_SIZE 20
 #define MEMORY_FILE "data_memory.txt"
 
-#define MMU_CONSTANT 1;
-
-#define logical_adress_bit_size 32
-#define page_size 4096 // 256, 1024, 2048, 4096
-
 // cada número da memória na verdade representa apenas 1 byte, não um número (int ou short) em si
-
 // o tamanho das páginas "256B, 1kB, 4kB" se referem a byte (B) e não bits (b)
 
-
-
-#define 
-
-typedef struct {
-    int virtual_adress;
-    int physical_adress;
-} TLB_ROW;
-
-typedef struct {
-    TLB_ROW rows[16];
-} TLB;
-
 int main(){
-    TLB tlb;
-    PAGE_TABLE page_table;
+    init_page_table_empty_rows();
+    init_tlb_empty_rows();
 
 //    unsigned short input; // 16 bits 
 //    char* format = "%hu";
