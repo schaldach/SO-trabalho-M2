@@ -1,30 +1,6 @@
-// IMPORTS
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdbool.h>
+#include "head.h"
 #include "page_table.c"
 #include "tlb.c"
-
-// MODIFICÁVEIS
-// 16 ou 32
-#define logical_adress_bit_size 32
-
-// CONSTANTES
-// páginas de 2KB para 16 bits, 4KB para 32 bits
-#if logical_adress_bit_size == 16
-    #define page_offset_bit_size 11
-    #define page_number_bit_size 5
-    #define input_format "%hu" 
-#else
-    #define page_offset_bit_size 12
-    #define page_number_bit_size 10
-    #define input_format "%u" 
-#endif
-
-#define MEMORY_LINE_SIZE 20
-#define MEMORY_FILE "data_memory.txt"
 
 int main(){
     TLB_ROW tlb[tlb_row_number];
@@ -46,7 +22,7 @@ int main(){
     // unsigned short input;
 
     // 32 bits
-    PAGE_TABLE_ROW page_table_32b[page_table_32b_number][page_table_32b_row_number];
+    PAGE_TABLE_ROW* page_table_32b[page_table_32b_number];
     OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_number];
     if(logical_adress_bit_size == 32){
         init_page_table_32b_rows(page_table_32b, outer_page_table);
@@ -56,10 +32,13 @@ int main(){
 
    // pegando input do console
    printf("Digite o endereço lógico: \n");
-   scanf(input_format, &input);
+   char* format;
+   if(hex) format = "%x\0";
+   else format = input_format;
+   scanf(format, &input);
    printf("\n");
 
-    // traduzindo o número em decimal
+    // traduzindo o número com operações binárias
     unsigned short page_offset = input & (page_offset_size-1);
     unsigned short page_number = input >> page_offset_bit_size;
     if(logical_adress_bit_size == 32){
@@ -77,6 +56,7 @@ int main(){
             tlb_hit = true;
         }
     }
+
     // se não foi achado na TLB, buscar na page_table
     if(!tlb_hit){
         printf("TLB Miss\n");

@@ -1,4 +1,4 @@
-#define tlb_row_number 16
+#include "head.h"
 
 typedef struct {
     unsigned short virtual_adress;
