@@ -9,11 +9,13 @@
 // 16 ou 32
 #define logical_adress_bit_size 32
 
+// se será escrito em hexadecimal ou decimal
 #define hex true
 
-#define max_frame_number 100
-// o limite total seria aproximadamente 244 para 32 bits (páginas de 4KB e 1 milhão de linhas)
+// o limite total para o número de frames seria 
+// 244 para 32 bits (páginas de 4KB e 1 milhão de linhas)
 // e 488 para 16 bits (páginas de 2KB)
+#define max_frame_number 100
 
 #define page_table_32b_number 1024
 #define page_table_32b_row_number 1024
@@ -32,7 +34,6 @@
     #define page_number_bit_size 10
     #define input_format "%u\0"
 #endif
-
 
 #define MEMORY_LINE_SIZE 20
 #define MEMORY_FILE "data_memory.txt"
