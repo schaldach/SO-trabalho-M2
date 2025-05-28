@@ -23,7 +23,8 @@
 #endif
 
 #define max_frame_number 100
-// seria aproximadamente 244 para 32 bits (páginas de 4KB e 1 milhão de linhas)
+// o limite total seria aproximadamente 244 para 32 bits (páginas de 4KB e 1 milhão de linhas)
+// e 488 para 16 bits (páginas de 2KB)
 
 #define page_table_32b_number 1024
 #define page_table_32b_row_number 1024
