@@ -6,4 +6,10 @@ para compilar o código
 e usar "./virtual_memory_translate"
 para executar
 
-https://cs.slu.edu/~ferry/courses/csci3500/slides/14_Page_Tables_TLB.pptx
+para 16 bits:
+apenas páginas de 2KB
+...
+
+para 32 bits:
+apenas páginas de 4KB
+...
