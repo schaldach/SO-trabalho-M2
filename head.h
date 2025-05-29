@@ -37,3 +37,5 @@
 
 #define MEMORY_LINE_SIZE 20
 #define MEMORY_FILE "data_memory.txt"
+
+#define head_print_size 5

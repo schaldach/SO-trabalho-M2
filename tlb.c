@@ -1,7 +1,7 @@
 #include "head.h"
 
 typedef struct {
-    unsigned short virtual_adress;
+    unsigned int virtual_adress;
     unsigned int physical_adress;
     bool accessed_bit;
 } TLB_ROW;

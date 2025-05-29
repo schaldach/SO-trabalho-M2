@@ -13,3 +13,4 @@ para simular um "tlb miss", usar um valor superior a 16x2048 = 32768
 para 32 bits:
 apenas páginas de 4KB
 para simular um "tlb miss", usar um valor superior a 16x4096 = 65536
+para ir para a segunda outer table, usar "10000000001000000000001" ou "401001" em hex
