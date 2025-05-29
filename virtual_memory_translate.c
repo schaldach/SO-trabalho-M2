@@ -5,7 +5,6 @@
 int main(){
     TLB_ROW tlb[tlb_row_number];
     init_tlb_rows(tlb);
-    print_tlb(tlb);
 
     // não da para usar define pois têm que ser "unsigned" para operações com bits
     // quantos deslocamentos existem em uma página
@@ -15,21 +14,25 @@ int main(){
     
     // 16 bits
     PAGE_TABLE_ROW page_table_16b[page_table_16b_row_number];
-    if(logical_adress_bit_size == 16){
-        init_page_table_16b_rows(page_table_16b);
-        print_page_table_16b(page_table_16b);
-    }
+    init_page_table_16b_rows(page_table_16b);
     // unsigned short input;
 
     // 32 bits
     OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_number];
-    if(logical_adress_bit_size == 32){
-        init_page_table_32b_rows(outer_page_table);
-        print_page_table_32b(outer_page_table);
-    } 
+    init_page_table_32b_rows(outer_page_table);
     unsigned int input;
 
     while(true){
+        printf("----------\n");
+        print_tlb(tlb);
+        if(logical_adress_bit_size == 16){
+            print_page_table_16b(page_table_16b);
+        }
+        else{
+            print_page_table_32b(outer_page_table);
+        }
+        printf("----------\n");
+
         // pegando input do console
         printf("Digite o endereço lógico: \n");
         char* format;
@@ -53,6 +56,7 @@ int main(){
         for(int i=0; i<tlb_row_number; i++){
             if(full_page_number == tlb[i].virtual_adress){
                 frame_number = tlb[i].physical_adress;
+                tlb[i].accessed_bit = 1;
                 tlb_hit = true;
             }
         }
@@ -115,17 +119,12 @@ int main(){
         }
         fclose(fptr);
 
-        printf(" número da página: %u\n número do quadro: %d\n deslocamento da página: %hu\n linha do arquivo: %u\n valor lido na memória: %d\n", 
+        printf("\n-> número da página: %u\n-> número do quadro: %d\n-> deslocamento da página: %hu\n-> linha do arquivo: %u\n-> valor lido na memória: %d\n", 
             page_number, frame_number, page_offset, file_physical_adress, result);
 
-        print_tlb(tlb);
-        if(logical_adress_bit_size == 16){
-            print_page_table_16b(page_table_16b);
-        }
-        else{
-            print_page_table_32b(outer_page_table);
-        }
-        printf("\n");
+        int l;
+        printf("\nDigite um inteiro para continuar:\n");
+        scanf("%d", &l);
     }
 
    return 0;
