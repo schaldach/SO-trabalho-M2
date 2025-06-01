@@ -43,7 +43,6 @@ int main(){
 
         // traduzindo o número com operações binárias
         unsigned short page_offset = input & (page_offset_size-1);
-        // para 16 bits, é apenas o page_number, e para 32 bits, é o page_number junto do outer_page_number
         unsigned int full_page_number = input >> page_offset_bit_size;
 
         unsigned short page_number = full_page_number & (page_number_size-1);

@@ -3,9 +3,9 @@
 typedef struct {
     // aqui não temos o endereço lógico pois ele será o index da linha da tabela
     unsigned int physical_adress;
-    bool dirty_bit; // se foi modificado (acho)
+    bool dirty_bit; // se foi modificado
     bool accessed_bit; // se foi acessado
-    bool valid_bit; // se realmente aponta para uma página válida
+    bool valid_bit; // se a página é válida
 } PAGE_TABLE_ROW;
 
 typedef struct {
@@ -84,7 +84,6 @@ void alocate_page_table(OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_num
     //popular tabela
     for(int i=0; i<page_table_32b_row_number; i++){
         bool valid_bit = (i<200) ? true:false;
-
         ptr[i].physical_adress = rand()%max_frame_number;
         ptr[i].dirty_bit = false;
         ptr[i].accessed_bit = false;
