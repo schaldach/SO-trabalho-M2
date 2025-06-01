@@ -41,9 +41,11 @@ int main(){
         scanf(format, &input);
         printf("\n");
 
-        // traduzindo o número com operações binárias
+        // traduzindo o endereço lógico com operações binárias
         unsigned short page_offset = input & (page_offset_size-1);
         unsigned int full_page_number = input >> page_offset_bit_size;
+        // para 16 bits, é apenas o page_number,  e para 32 bits, é o page_number junto do outer_page_number
+        // para ambos, é o endereço que será salvo na TLB
 
         unsigned short page_number = full_page_number & (page_number_size-1);
         unsigned short outer_page_number = full_page_number >> (page_number_bit_size);
