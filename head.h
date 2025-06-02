@@ -1,9 +1,20 @@
 // IMPORTS
 #include <stdio.h>
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
+#include <stdalign.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+
+// Usado para substituir o unsigned short e unsigned int 
+typedef uint32_t u32; 
+typedef uint16_t u16;
+
+//typedef int32_t i32;
+//typedef int16_t i16;
 
 // MODIFICÁVEIS
 // 16 ou 32

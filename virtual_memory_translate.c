@@ -8,9 +8,9 @@ int main(){
 
     // não da para usar define pois têm que ser "unsigned" para operações com bits
     // quantos deslocamentos existem em uma página
-    unsigned short page_offset_size = 1<<page_offset_bit_size;
+    u16 page_offset_size = 1<<page_offset_bit_size;
     // quantos números de página existem
-    unsigned short page_number_size = 1<<page_number_bit_size;
+    u16 page_number_size = 1<<page_number_bit_size;
     
     // 16 bits
     PAGE_TABLE_ROW page_table_16b[page_table_16b_row_number];
@@ -20,7 +20,7 @@ int main(){
     // 32 bits
     OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_number];
     init_page_table_32b_rows(outer_page_table);
-    unsigned int input;
+    u32 input;
 
     while(true){
         printf("----------\n");
@@ -42,15 +42,15 @@ int main(){
         printf("\n");
 
         // traduzindo o endereço lógico com operações binárias
-        unsigned short page_offset = input & (page_offset_size-1);
-        unsigned int full_page_number = input >> page_offset_bit_size;
+        u16 page_offset = input & (page_offset_size-1);
+        u32 full_page_number = input >> page_offset_bit_size;
         // para 16 bits, é apenas o page_number,  e para 32 bits, é o page_number junto do outer_page_number
         // para ambos, é o endereço que será salvo na TLB
 
-        unsigned short page_number = full_page_number & (page_number_size-1);
-        unsigned short outer_page_number = full_page_number >> (page_number_bit_size);
+        u16 page_number = full_page_number & (page_number_size-1);
+        u16 outer_page_number = full_page_number >> (page_number_bit_size);
 
-        unsigned int frame_number;
+        u32 frame_number;
 
         // buscando na TLB
         bool tlb_hit = false;
@@ -104,12 +104,12 @@ int main(){
             printf("TLB hit\n");
         }
 
-        unsigned int file_physical_adress = frame_number*page_offset_size + page_offset;
+        u32 file_physical_adress = frame_number*page_offset_size + page_offset;
         
         // lendo a posição do arquivo (endereço físico)
         FILE *fptr = fopen(MEMORY_FILE, "r");
         char currentLine[MEMORY_LINE_SIZE];
-        int result, i=0;
+        u32 result = 0, i = 0;
 
         while(fgets(currentLine, MEMORY_LINE_SIZE, fptr)){
             if(i == file_physical_adress){
@@ -120,12 +120,20 @@ int main(){
         }
         fclose(fptr);
 
+        // Informações gerais da busca
         printf("\n-> número da página: %u\n-> número do quadro: %d\n-> deslocamento da página: %hu\n-> linha do arquivo: %u\n-> valor lido na memória: %d\n", 
             page_number, frame_number, page_offset, file_physical_adress, result);
 
-        int l;
-        printf("\nDigite um inteiro para continuar:\n");
-        scanf("%d", &l);
+        { //Logica para sair do loop
+            char c[1];
+            printf("\nDigite 'q' se desejas parar o programa: ");
+            scanf("%s",c); //"%d",
+            
+            if(c[0] == 'q'){
+                printf("quit\n");
+                break;
+            }
+        }
     }
 
    return 0;
