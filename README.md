@@ -12,7 +12,6 @@ Utilize "gcc -o virtual_memory_translate virtual_memory_translate.c -lrt -Wall -
 
 -Wextra: Ativa avisos adicionais que não estão incluídos em -Wall, como avisos sobre argumentos de funções não utilizados e outras verificações mais detalhadas
 
-----------------------------------< Situações >------------------------------------
 para 16 bits:
 apenas páginas de 2KB
 para simular um "tlb miss", usar um valor superior a 16x2048 = 32768
