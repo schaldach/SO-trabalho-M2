@@ -16,7 +16,7 @@ void init_tlb_rows(TLB_ROW tlb[tlb_row_number]){
     }
 };
 
-void replace_tlb(TLB_ROW tlb[tlb_row_number], unsigned int virtual_adress, unsigned int physical_adress){
+void replace_tlb(TLB_ROW tlb[tlb_row_number], u32 virtual_adress, u32 physical_adress){
     // implementando LRU com segunda chance
     bool replaced = false;
     for(int i=0; i<tlb_row_number; i++){

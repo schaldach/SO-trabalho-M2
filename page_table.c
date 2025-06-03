@@ -41,14 +41,14 @@ void print_page_table_32b(
     for(int i=0; i<page_table_32b_number; i++){
         if(outer_page_table[i].page_table_pointer != NULL){
             PAGE_TABLE_ROW* page_table_32b = outer_page_table[i].page_table_pointer;
-            printf("Page Table %d (%d)\n", i, head_print_size);
+            printf("Page Table %d (%d/%d)\n", i, head_print_size, page_table_32b_row_number);
             for(int j=0; j<head_print_size; j++){
-                printf("%4d - end. físico: %12u, bit acesso: %d, bit sujo: %d, bit válido: %d\n", i, page_table_32b[j].physical_adress, page_table_32b[j].accessed_bit, page_table_32b[j].dirty_bit, page_table_32b[j].valid_bit);
+                printf("%4d - end. físico: %12u, bit acesso: %d, bit sujo: %d, bit válido: %d\n", j, page_table_32b[j].physical_adress, page_table_32b[j].accessed_bit, page_table_32b[j].dirty_bit, page_table_32b[j].valid_bit);
             }
             printf("\n");
         }
     }
-    printf("Outer Page Table (%d):\n", head_print_size);
+    printf("Outer Page Table (%d/%d):\n", head_print_size, page_table_32b_number);
     for(int i=0;i<head_print_size;i++){
         printf("%2d - ponteiro tabela de páginas: %p\n", i, outer_page_table[i].page_table_pointer);
     }
@@ -66,7 +66,7 @@ void dealocate_page_tables(OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_
 // Necessário pois não conseguimos armazenar 1024 tabelas de página,
 // então vamos simular como o computador faria, trazendo a tabela interior da memória
 // pois apenas a tabela exterior fica na memória principal
-void alocate_page_table(OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_number], unsigned short index){
+void alocate_page_table(OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_number], u16 index){
     // criar nova tabela
     PAGE_TABLE_ROW *ptr = (PAGE_TABLE_ROW *)malloc(sizeof(PAGE_TABLE_ROW) * page_table_32b_row_number);
     if(ptr == NULL){

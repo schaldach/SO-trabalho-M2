@@ -13,12 +13,24 @@
 typedef uint32_t u32; 
 typedef uint16_t u16;
 
-//typedef int32_t i32;
-//typedef int16_t i16;
-
-// MODIFICÁVEIS
 // 16 ou 32
 #define logical_adress_bit_size 32
+
+// páginas de 2KB ou menos para 16 bits, 4KB para 32 bits
+#if logical_adress_bit_size == 16
+    // 11 para 2048 (2KB), 10 para 1024 (1KB), 9 para 512 (512B), 8 para 256 (256B)
+    #define page_offset_bit_size 9
+    #define page_number_bit_size 5
+    #define full_page_number_bit_size page_number_bit_size
+    #define input_format "%hu\0" 
+    typedef u16 input_type;
+#else
+    #define page_offset_bit_size 12
+    #define page_number_bit_size 10
+    #define full_page_number_bit_size page_number_bit_size*2
+    #define input_format "%u\0"
+    typedef u32 input_type;
+#endif
 
 // se será escrito em hexadecimal ou decimal
 #define hex true
@@ -33,19 +45,6 @@ typedef uint16_t u16;
 #define page_table_16b_row_number 32
 
 #define tlb_row_number 16
-
-// CONSTANTES
-// páginas de 2KB para 16 bits, 4KB para 32 bits
-#if logical_adress_bit_size == 16
-    // 11 para 2048 (2KB), 10 para 1024 (1KB), 9 para 512 (512B), 8 para 256 (256B)
-    #define page_offset_bit_size 11
-    #define page_number_bit_size 5
-    #define input_format "%hu\0" 
-#else
-    #define page_offset_bit_size 12
-    #define page_number_bit_size 10
-    #define input_format "%u\0"
-#endif
 
 #define MEMORY_LINE_SIZE 20
 #define MEMORY_FILE "data_memory.txt"

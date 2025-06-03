@@ -11,16 +11,18 @@ int main(){
     u16 page_offset_size = 1<<page_offset_bit_size;
     // quantos números de página existem
     u16 page_number_size = 1<<page_number_bit_size;
+    // quantos números de páginas "totais" (considerando interna e externa) existem
+    u32 full_page_number_size = 1<<full_page_number_bit_size;
     
+    input_type input;
+
     // 16 bits
     PAGE_TABLE_ROW page_table_16b[page_table_16b_row_number];
     init_page_table_16b_rows(page_table_16b);
-    // unsigned short input;
 
     // 32 bits
     OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_number];
     init_page_table_32b_rows(outer_page_table);
-    u32 input;
 
     while(true){
         printf("----------\n");
@@ -44,6 +46,7 @@ int main(){
         // traduzindo o endereço lógico com operações binárias
         u16 page_offset = input & (page_offset_size-1);
         u32 full_page_number = input >> page_offset_bit_size;
+            full_page_number = full_page_number & (full_page_number_size-1);
         // para 16 bits, é apenas o page_number,  e para 32 bits, é o page_number junto do outer_page_number
         // para ambos, é o endereço que será salvo na TLB
 
@@ -98,7 +101,7 @@ int main(){
                 }
                 frame_number = page_table_32b[page_number].physical_adress;
             }
-            replace_tlb(tlb, page_number, frame_number);
+            replace_tlb(tlb, full_page_number, frame_number);
         }
         else{
             printf("TLB hit\n");
@@ -109,7 +112,8 @@ int main(){
         // lendo a posição do arquivo (endereço físico)
         FILE *fptr = fopen(MEMORY_FILE, "r");
         char currentLine[MEMORY_LINE_SIZE];
-        u32 result = 0, i = 0;
+        u16 result; 
+        u32 i = 0;
 
         while(fgets(currentLine, MEMORY_LINE_SIZE, fptr)){
             if(i == file_physical_adress){
@@ -121,8 +125,8 @@ int main(){
         fclose(fptr);
 
         // Informações gerais da busca
-        printf("\n-> número da página: %u\n-> número do quadro: %d\n-> deslocamento da página: %hu\n-> linha do arquivo: %u\n-> valor lido na memória: %d\n", 
-            page_number, frame_number, page_offset, file_physical_adress, result);
+        printf("\n-> número da página: %u\n-> número do quadro: %d\n-> deslocamento da página: %hu\n-> linha do arquivo (início = 0): %u\n-> valor lido na memória: %d\n", 
+            full_page_number, frame_number, page_offset, file_physical_adress, result);
 
         { //Logica para sair do loop
             char c[1];
