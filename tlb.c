@@ -30,6 +30,13 @@ void replace_tlb(TLB_ROW tlb[tlb_row_number], unsigned int virtual_adress, unsig
             replaced = true;
         }
     }
+
+    // se nenhuma linha foi substituída, substituir a primeira
+    if(!replaced){
+        tlb[0].virtual_adress = virtual_adress;
+        tlb[0].physical_adress = physical_adress;
+        tlb[0].accessed_bit = true;
+    }
 };
 
 void print_tlb(TLB_ROW tlb[tlb_row_number]){
