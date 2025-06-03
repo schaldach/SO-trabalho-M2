@@ -16,10 +16,10 @@ typedef uint16_t u16;
 // 16 ou 32
 #define logical_adress_bit_size 32
 
-// páginas de 2KB ou menos para 16 bits, 4KB para 32 bits
+// páginas de 2KB a 256B para 16 bits, 4KB para 32 bits
 #if logical_adress_bit_size == 16
     // 11 para 2048 (2KB), 10 para 1024 (1KB), 9 para 512 (512B), 8 para 256 (256B)
-    #define page_offset_bit_size 9
+    #define page_offset_bit_size 11
     #define page_number_bit_size 5
     #define full_page_number_bit_size page_number_bit_size
     #define input_format "%hu\0" 

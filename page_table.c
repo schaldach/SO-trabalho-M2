@@ -80,7 +80,7 @@ void alocate_page_table(OUTER_PAGE_TABLE_ROW outer_page_table[page_table_32b_num
         printf("Memory Allocation successful\n");
     }
 
-    srand(index);
+    srand(index+1);
     //popular tabela
     for(int i=0; i<page_table_32b_row_number; i++){
         bool valid_bit = (i<200) ? true:false;

@@ -71,12 +71,12 @@ int main(){
 
             // 16 bits
             if(logical_adress_bit_size == 16){
+                page_table_16b[page_number].accessed_bit = true;
                 bool valid_bit = page_table_16b[page_number].valid_bit;
                 if(valid_bit == 0){
                     printf("Page Fault\n");
                     page_table_16b[page_number].physical_adress = 105;
                     page_table_16b[page_number].valid_bit = true;
-                    page_table_16b[page_number].accessed_bit = true;
                     printf("Page swapped into memory\n");
                 }
                 else{
@@ -86,14 +86,16 @@ int main(){
             }
             //32 bits
             else{
-                alocate_page_table(outer_page_table, outer_page_number);
+                if(outer_page_table[outer_page_number].page_table_pointer == NULL){
+                    alocate_page_table(outer_page_table, outer_page_number);
+                }
                 PAGE_TABLE_ROW* page_table_32b = outer_page_table[outer_page_number].page_table_pointer;
+                page_table_32b[page_number].accessed_bit = true;
                 bool valid_bit = page_table_32b[page_number].valid_bit;
                 if(valid_bit == 0){
                     printf("Page Fault\n");
                     page_table_32b[page_number].physical_adress = 105;
                     page_table_32b[page_number].valid_bit = true;
-                    page_table_32b[page_number].accessed_bit = true;
                     printf("Page swapped into memory\n");
                 }
                 else{
